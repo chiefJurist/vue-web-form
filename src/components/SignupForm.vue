@@ -14,11 +14,13 @@
 
         <!--Using keyboard events together with two-way data binding-->
         <label>Skills: </label>
-        <!--Whenever any key is raised up, the addSkill Function will be called-->
-        <input type="text" v-model="tempSkill" @keyup="addSkill">
+        <!--
+            The alt key was added because when using a key with the alt key, 
+            it doesn't show but it registers the key event. This way, the comma won't show when outputting the skills
+        -->
+        <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
         <!--Cycling through the skills array-->
         <div v-for="skill in skills" :key="skill" class="skill">
-            <!--Note that we need a unique key when using v-for. Hence that's why we are biding it to each key-->
             {{ skill }}
         </div>
 
@@ -47,9 +49,11 @@
         },
         methods: {
             addSkill(e){
-                //Adding the skill if the comma key is pressed and the skill is not empty
-                if (key === ',' && this.tempSkill) {
-                    this.skills.push(this.tempSkill)
+                if (e.key === ',' && this.tempSkill) {
+                    //Making sure one skill is not used twice
+                    if (!this.skills.includes(this.tempSkill)) {
+                        this.skills.push(this.tempSkill)
+                    }
                     this.tempSkill = ''
                 }
             }
