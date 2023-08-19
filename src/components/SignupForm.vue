@@ -14,14 +14,11 @@
 
         <!--Using keyboard events together with two-way data binding-->
         <label>Skills: </label>
-        <!--
-            The alt key was added because when using a key with the alt key, 
-            it doesn't show but it registers the key event. This way, the comma won't show when outputting the skills
-        -->
         <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
         <!--Cycling through the skills array-->
         <div v-for="skill in skills" :key="skill" class="skill">
-            {{ skill }}
+            <!--Removing the skill when it is clicked-->
+           <span @click="deleteSkill(skill)"> {{ skill }}</span>
         </div>
 
         <div class="terms">
@@ -50,12 +47,17 @@
         methods: {
             addSkill(e){
                 if (e.key === ',' && this.tempSkill) {
-                    //Making sure one skill is not used twice
                     if (!this.skills.includes(this.tempSkill)) {
                         this.skills.push(this.tempSkill)
                     }
                     this.tempSkill = ''
                 }
+            },
+            deleteSkill(skill){
+                this.skills = this.skills.filter((item)=> {
+                    //returning all the skills that is not the clicked skill
+                    return skill !== item
+                })
             }
         }
     }
@@ -94,5 +96,17 @@
         margin: 0 10px 0 0;
         position: relative;
         top: 2px;
+    }
+    .skill{
+        display: inline-block;
+        margin: 20px 10px 0 0;
+        padding: 6px 12px;
+        background: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        color: #777;
+        cursor: pointer;
     }
 </style>
