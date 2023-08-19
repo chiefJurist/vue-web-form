@@ -6,35 +6,31 @@
         <label>Password: </label>
         <input type="password" required v-model="password">
 
-        <label>Role</label>
+        <label>Role: </label>
         <select v-model="role">
             <option value="developer">Web developer</option>
             <option value="designer">Web designer</option>
         </select>
 
-        <!--Using two-way data binding for checkboxes-->
+        <!--Using keyboard events together with two-way data binding-->
+        <label>Skills: </label>
+        <!--Whenever any key is raised up, the addSkill Function will be called-->
+        <input type="text" v-model="tempSkill" @keyup="addSkill">
+        <!--Cycling through the skills array-->
+        <div v-for="skill in skills" :key="skill" class="skill">
+            <!--Note that we need a unique key when using v-for. Hence that's why we are biding it to each key-->
+            {{ skill }}
+        </div>
+
         <div class="terms">
             <input type="checkbox" v-model="terms" required>
             <label>Accept terms and conditions</label>
-        </div>
-
-        <!--Using arrays for multiple checboxes-->
-        <div>
-            <input type="checkbox" value="Shaun" v-model="names">
-            <label>Shaun</label>
-
-            <input type="checkbox" value="Yoshi" v-model="names">
-            <label>Yoshi</label>
-
-            <input type="checkbox" value="Mario" v-model="names">
-            <label>Mario</label>
         </div>
     </form>
     <p>Email: {{ email }}</p>
     <p>Password: {{ password }}</p>
     <p>Role: {{ role }}</p>
     <p>Terms accepeted: {{ terms }}</p>
-    <p>Names: {{ names }}</p>
 </template>
 
 <script>
@@ -44,10 +40,18 @@
                 email: "",
                 password: "",
                 role: "",
-                //Using a property with a boolean value to store the checkbox
                 terms: false,
-                //Any of the selected values will be in this array
-                names: []
+                tempSkill: '',
+                skills: []
+            }
+        },
+        methods: {
+            addSkill(e){
+                //Adding the skill if the comma key is pressed and the skill is not empty
+                if (key === ',' && this.tempSkill) {
+                    this.skills.push(this.tempSkill)
+                    this.tempSkill = ''
+                }
             }
         }
     }
