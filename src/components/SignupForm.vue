@@ -1,31 +1,36 @@
 <template>
     <!--Handling submission-->
     <!--The 'prevent' modifier is used to prevent the form from refreshing on submission-->
-    <form @submit="handleSubbmit">
+    <form @submit.prevent="handleSubbmit">
         <label>Email: </label>
         <input type="text" required v-model="email">
 
+        <!--Password template-->
         <label>Password: </label>
         <input type="password" required v-model="password">
         <div v-if="passwordError">{{ passwordError }}</div>
 
+        <!--Role template-->
         <label>Role: </label>
         <select v-model="role">
             <option value="developer">Web developer</option>
             <option value="designer">Web designer</option>
         </select>
 
-        <label>Skills: </label>
+        <!--Skills template-->
+        <label>Skills(hold "alt" + "," to register a skill): </label>
         <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
         <div v-for="skill in skills" :key="skill" class="skill">
            <span @click="deleteSkill(skill)"> {{ skill }}</span>
         </div>
 
+        <!--Terms template-->
         <div class="terms">
             <input type="checkbox" v-model="terms" required>
             <label>Accept terms and conditions</label>
         </div>
 
+        <!--Submit template-->
         <div class="submit">
             <button>Create an Account</button>
         </div>
@@ -40,6 +45,7 @@
     export default {
         data(){
             return{
+                //properties
                 email: "",
                 password: "",
                 role: "",
@@ -50,6 +56,7 @@
             }
         },
         methods: {
+            //Adding skills
             addSkill(e){
                 if (e.key === ',' && this.tempSkill) {
                     if (!this.skills.includes(this.tempSkill)) {
@@ -58,18 +65,19 @@
                     this.tempSkill = ''
                 }
             },
+            //Deleting skills
             deleteSkill(skill){
                 this.skills = this.skills.filter((item)=> {
                     return skill !== item
                 })
             },
+            //Submitting form
             handleSubbmit(){
-                //Validating the password
                 this.passwordError = this.password.length > 5? "" : "Password must be at least 5 characters long"
                 if (!this.passwordError) {
                     console.log("email: ", this.email)
                     console.log("password: ", this.password)
-                    console.log("roles: ", this.roles)
+                    console.log("role: ", this.role)
                     console.log("skills: ", this.skills)
                     console.log("terms accepted: ", this.terms)
                 }
