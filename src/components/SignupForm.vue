@@ -7,7 +7,7 @@
 
         <label>Password: </label>
         <input type="password" required v-model="password">
-        <div v-if="passwordError">{{ passwordError }}</div>
+        <div v-if="passwordError" class="error">{{ passwordError }}</div>
 
         <label>Role: </label>
         <select v-model="role">
