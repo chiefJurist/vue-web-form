@@ -1,7 +1,7 @@
 <template>
     <!--Handling submission-->
     <!--The 'prevent' modifier is used to prevent the form from refreshing on submission-->
-    <form @submit="handleSubbmit">
+    <form @submit.prevent="handleSubbmit">
         <label>Email: </label>
         <input type="text" required v-model="email">
 
