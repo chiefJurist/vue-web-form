@@ -48,7 +48,7 @@
         methods: {
             addSkill(e){
                 //Adding the skill if the comma key is pressed and the skill is not empty
-                if (key === ',' && this.tempSkill) {
+                if (e.key === ',' && this.tempSkill) {
                     this.skills.push(this.tempSkill)
                     this.tempSkill = ''
                 }
