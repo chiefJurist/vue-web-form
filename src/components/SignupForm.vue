@@ -1,5 +1,7 @@
 <template>
-    <form>
+    <!--Handling submission-->
+    <!--The 'prevent' modifier is used to prevent the form from refreshing on submission-->
+    <form @click.prevent="handleSubbmit">
         <label>Email: </label>
         <input type="text" required v-model="email">
 
@@ -12,18 +14,19 @@
             <option value="designer">Web designer</option>
         </select>
 
-        <!--Using keyboard events together with two-way data binding-->
         <label>Skills: </label>
         <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
-        <!--Cycling through the skills array-->
         <div v-for="skill in skills" :key="skill" class="skill">
-            <!--Removing the skill when it is clicked-->
            <span @click="deleteSkill(skill)"> {{ skill }}</span>
         </div>
 
         <div class="terms">
             <input type="checkbox" v-model="terms" required>
             <label>Accept terms and conditions</label>
+        </div>
+
+        <div class="submit">
+            <button>Create an Account</button>
         </div>
     </form>
     <p>Email: {{ email }}</p>
@@ -55,9 +58,11 @@
             },
             deleteSkill(skill){
                 this.skills = this.skills.filter((item)=> {
-                    //returning all the skills that is not the clicked skill
                     return skill !== item
                 })
+            },
+            handleSubbmit(){
+                console.log('form submitted')
             }
         }
     }
@@ -108,5 +113,16 @@
         font-weight: bold;
         color: #777;
         cursor: pointer;
+    }
+    .submit{
+        text-align: center;
+    }
+    button{
+        background: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
     }
 </style>
