@@ -1,13 +1,88 @@
 <template>
-    <form>
+    <!--Handling submission-->
+    <!--The 'prevent' modifier is used to prevent the form from refreshing on submission-->
+    <form @submit.prevent="handleSubbmit">
         <label>Email: </label>
-        <input type="text" required>
+        <input type="text" required v-model="email">
+
+        <!--Password template-->
+        <label>Password: </label>
+        <input type="password" required v-model="password">
+        <div v-if="passwordError">{{ passwordError }}</div>
+
+        <!--Role template-->
+        <label>Role: </label>
+        <select v-model="role">
+            <option value="developer">Web developer</option>
+            <option value="designer">Web designer</option>
+        </select>
+
+        <!--Skills template-->
+        <label>Skills(hold "alt" + "," to register a skill): </label>
+        <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
+        <div v-for="skill in skills" :key="skill" class="skill">
+           <span @click="deleteSkill(skill)"> {{ skill }}</span>
+        </div>
+
+        <!--Terms template-->
+        <div class="terms">
+            <input type="checkbox" v-model="terms" required>
+            <label>Accept terms and conditions</label>
+        </div>
+
+        <!--Submit template-->
+        <div class="submit">
+            <button>Create an Account</button>
+        </div>
     </form>
+    <p>Email: {{ email }}</p>
+    <p>Password: {{ password }}</p>
+    <p>Role: {{ role }}</p>
+    <p>Terms accepeted: {{ terms }}</p>
 </template>
 
 <script>
     export default {
-
+        data(){
+            return{
+                //properties
+                email: "",
+                password: "",
+                role: "",
+                terms: false,
+                tempSkill: "",
+                skills: [],
+                passwordError: ""
+            }
+        },
+        methods: {
+            //Adding skills
+            addSkill(e){
+                if (e.key === ',' && this.tempSkill) {
+                    if (!this.skills.includes(this.tempSkill)) {
+                        this.skills.push(this.tempSkill)
+                    }
+                    this.tempSkill = ''
+                }
+            },
+            //Deleting skills
+            deleteSkill(skill){
+                this.skills = this.skills.filter((item)=> {
+                    return skill !== item
+                })
+            },
+            //Submitting form
+            handleSubbmit(){
+                this.passwordError = this.password.length > 5? "" : "Password must be at least 5 characters long"
+                if (!this.passwordError) {
+                    console.log("email: ", this.email)
+                    console.log("password: ", this.password)
+                    console.log("role: ", this.role)
+                    console.log("skills: ", this.skills)
+                    console.log("terms accepted: ", this.terms)
+                }
+            }
+        }
     }
 </script>
 
@@ -29,7 +104,7 @@
         letter-spacing: 1px;
         font-weight: bold;
     }
-    input{
+    input, select{
         display: block;
         padding: 10px 6px;
         width: 100%;
@@ -37,5 +112,41 @@
         border: none;
         border-bottom: 1px solid #ddd;
         color: #555;
+    }
+    input[type="checkbox"]{
+        display: inline-block;
+        width: 16px;
+        margin: 0 10px 0 0;
+        position: relative;
+        top: 2px;
+    }
+    .skill{
+        display: inline-block;
+        margin: 20px 10px 0 0;
+        padding: 6px 12px;
+        background: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        color: #777;
+        cursor: pointer;
+    }
+    .submit{
+        text-align: center;
+    }
+    button{
+        background: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
+    }
+    .error{
+        color: #ff0e62;
+        margin-top: 10px;
+        font-size: 0.8rem;
+        font-weight: bold;
     }
 </style>
